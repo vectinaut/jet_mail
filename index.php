@@ -57,6 +57,7 @@ $publications = selectAll('publication');
               <?php echo $value['number_pages']; ?> страниц
             </span>
             <div class="publications-list__item-bottom flex">
+
               <span class="publications-list__item-price">
                 <?php echo $value['price']?>р.
               </span>

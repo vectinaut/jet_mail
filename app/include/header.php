@@ -12,10 +12,11 @@
                 Войти
             </a>
           <?php endif; ?>
-            <a href="cart.php" class="header-btn">
-                Корзина
-            </a>
+
           <?php if(isset($_SESSION['id'])): ?>
+            <a href="cart.php" class="header-btn">
+              Корзина
+            </a>
           <a href="personal.php" class="header-btn">
             <?php echo $_SESSION['name']; ?>
           </a>

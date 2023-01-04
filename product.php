@@ -3,9 +3,15 @@ include ("app/controllers/users.php");
 
 $post = $_GET['post'];
 $publication = selectOnePublication(['publication_id'=>$post]);
+
 //tt($publication);
 //exit();
 ?>
+
+<?php if (empty($publication)):?>
+<h1>404 Not Found</h1>
+<?php exit(); ?>
+<?php endif;?>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -54,9 +60,13 @@ $publication = selectOnePublication(['publication_id'=>$post]);
             <span class="product__content-price">
               <?=$publication['price']?>р. в месяц
             </span>
-            <button class="product__content-btn btn-resert">
-              Добавить в корзину
-            </button>
+            <form method="post" action="http://localhost/jet_mail/cart.php">
+              <button value="<?=$publication['publication_id']?>" name="add-cart" class="product__content-btn btn-resert">
+                <?php $_SESSION['update_cart']=1;?>
+                Добавить в корзину
+              </button>
+            </form>
+
           </div>
         </div>
       </div>

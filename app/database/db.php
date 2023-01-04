@@ -82,6 +82,7 @@ function selectOnePublication($params=[]){
   global $pdo;
 
   $sql = "SELECT 
+    pub.publication_id,
     pub.name as name,
     pub.description,
     pub.price,
@@ -112,6 +113,46 @@ function selectOnePublication($params=[]){
   dbCheckError($query);
 
   return $query->fetch();
+}
+
+function selectAllCarts($params=[]){
+  global $pdo;
+
+  $sql = "SELECT 
+    user.id as user_id,
+    user.first_name as first_name,
+    cart.publication_id as pub_id,
+    pub.name as pub_name,
+    pub.price,
+    cart.status as cart_status,
+    pub.img
+    
+    
+    FROM cart 
+    JOIN user ON cart.user_id = user.id
+    JOIN publication as pub ON pub.publication_id = cart.publication_id";
+  if(!empty($params)){
+    $i = 0;
+    foreach ($params as $key => $value) {
+      if (!is_numeric($value)){
+        $value = "'".$value."'";
+      }
+      if ($i===0){
+        $sql = $sql . " WHERE $key=$value";
+      }else{
+        $sql = $sql . " AND $key=$value";
+      }
+      $i++;
+
+    }
+  }
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
+
+  return $query->fetchAll();
 }
 
 function insert($table, $params){
@@ -164,6 +205,32 @@ function update($table, $id, $params){
     $query->execute();
 
     dbCheckError($query);
+}
+
+function updateCart($user_id, $publication_id, $params){
+  global $pdo;
+
+  $i = 0;
+  $str = '';
+  foreach ($params as $key => $value) {
+    if ($i === 0){
+      $str = $str . "$key='$value'";
+    }else{
+      $str = $str . ", $key='$value'";
+    }
+    $i++;
+
+  }
+
+  $sql = "UPDATE cart SET $str WHERE 
+                         user_id = $user_id 
+                         AND publication_id = $publication_id
+                         AND status=1";
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
 }
 
 function delete($table, $id){

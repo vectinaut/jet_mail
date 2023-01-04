@@ -1,5 +1,42 @@
 <?php
 include ("app/controllers/users.php");
+if (!isset($_SESSION['id'])){
+  echo "<h1>403 Error</h1>";
+  exit();
+}
+
+elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-cart'])){
+  if ($_SESSION['update_cart'] === 1){
+    $carts = selectAll('cart', [
+      'user_id'=>$_SESSION['id'],
+      'publication_id'=>$_POST['add-cart'],
+      'status'=>1]);
+
+    if(empty($carts)){
+      $params = [
+        'user_id' => $_SESSION['id'],
+        'publication_id' => $_POST['add-cart'],
+        'status' => 1
+      ];
+      insert('cart', $params);
+      $_SESSION['update_cart'] = -1;
+    }else{
+      echo "Уже добавлено!";
+    }
+
+  }
+
+}
+if (isset($_POST['delete-item'])){
+  echo "УДАЛИТЬ!";
+  updateCart($_SESSION['id'], $_POST['delete-item'], ['status'=>0]);
+}
+
+$cart_items = selectAllCarts(['cart.status'=>1, 'user_id'=>$_SESSION['id']]);
+
+//tt($_SESSION);
+//var_dump($_POST);
+
 ?>
 
 <!DOCTYPE html>
@@ -34,23 +71,28 @@ include ("app/controllers/users.php");
     <section class="cart">
       <div class="container cart-container">
         <h2 class="cart__title">
-          Корзина печатных изданий
+
+          Корзина подписных изданий
         </h2>
         <ul class="cart-list list-resert flex">
+          <?php foreach ($cart_items as $key => $value): ?>
           <li class="cart-list__item flex">
             <div class="cart-list__item-photo">
-              <img src="assets/img/cat.png" alt="">
+              <img src="assets/img/posts/<?php echo $value['img']?>" alt="">
             </div>
             <div class="cart-list__item-content flex">
               <div class="cart-list__item-header flex">
                 <h3 class="cart-list__item-title">
-                  Котята спасут мир
+                  <?php echo $value['pub_name']; ?>
                 </h3>
-                <button class="cart-list__item-close-btn btn-resert">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.929612 13.6568C0.539088 14.0473 0.539088 14.6805 0.929612 15.071C1.32014 15.4615 1.9533 15.4615 2.34383 15.071L8.00085 9.41399L13.658 15.0711C14.0485 15.4616 14.6817 15.4616 15.0722 15.0711C15.4627 14.6806 15.4627 14.0474 15.0722 13.6569L9.41506 7.99978L15.0717 2.34309C15.4623 1.95257 15.4623 1.3194 15.0717 0.928879C14.6812 0.538355 14.0481 0.538355 13.6575 0.928879L8.00085 6.58557L2.34427 0.928985C1.95374 0.538461 1.32058 0.538461 0.930055 0.928985C0.539531 1.31951 0.539531 1.95267 0.930055 2.3432L6.58663 7.99978L0.929612 13.6568Z" fill="#A0A0A4"/>
-                  </svg>
-                </button>
+                <form action="cart.php" type="post" class="cart-list__item-close-btn btn-resert">
+                  <button value="<?=$value['pub_id']?>" name="delete-item" class="cart-list__item-close-btn btn-resert" type="reset">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.929612 13.6568C0.539088 14.0473 0.539088 14.6805 0.929612 15.071C1.32014 15.4615 1.9533 15.4615 2.34383 15.071L8.00085 9.41399L13.658 15.0711C14.0485 15.4616 14.6817 15.4616 15.0722 15.0711C15.4627 14.6806 15.4627 14.0474 15.0722 13.6569L9.41506 7.99978L15.0717 2.34309C15.4623 1.95257 15.4623 1.3194 15.0717 0.928879C14.6812 0.538355 14.0481 0.538355 13.6575 0.928879L8.00085 6.58557L2.34427 0.928985C1.95374 0.538461 1.32058 0.538461 0.930055 0.928985C0.539531 1.31951 0.539531 1.95267 0.930055 2.3432L6.58663 7.99978L0.929612 13.6568Z" fill="#A0A0A4"/>
+                    </svg>
+                  </button>
+                </form>
+
               </div>
               <span class="cart-list__item-descr">
                 Оформить подписку на:
@@ -67,45 +109,12 @@ include ("app/controllers/users.php");
                 </button>
               </div>
               <span class="cart-list__item-price">
-                516р.
+                <?php echo $value['price']?>р.
               </span>
             </div>
           </li>
-          <li class="cart-list__item flex">
-            <div class="cart-list__item-photo">
-              <img src="assets/img/cat.png" alt="">
-            </div>
-            <div class="cart-list__item-content flex">
-              <div class="cart-list__item-header flex">
-                <h3 class="cart-list__item-title">
-                  Котята спасут мир 2
-                </h3>
-                <button class="cart-list__item-close-btn btn-resert">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.929612 13.6568C0.539088 14.0473 0.539088 14.6805 0.929612 15.071C1.32014 15.4615 1.9533 15.4615 2.34383 15.071L8.00085 9.41399L13.658 15.0711C14.0485 15.4616 14.6817 15.4616 15.0722 15.0711C15.4627 14.6806 15.4627 14.0474 15.0722 13.6569L9.41506 7.99978L15.0717 2.34309C15.4623 1.95257 15.4623 1.3194 15.0717 0.928879C14.6812 0.538355 14.0481 0.538355 13.6575 0.928879L8.00085 6.58557L2.34427 0.928985C1.95374 0.538461 1.32058 0.538461 0.930055 0.928985C0.539531 1.31951 0.539531 1.95267 0.930055 2.3432L6.58663 7.99978L0.929612 13.6568Z" fill="#A0A0A4"/>
-                  </svg>
-                </button>
-                
-              </div>
-              <span class="cart-list__item-descr">
-                Оформить подписку на:
-              </span>
-              <div class="cart-list__item-btns flex">
-                <button class="cart-list__item-btn btn-resert cart-list__item-btn-active">
-                  1 мес.
-                </button>
-                <button class="cart-list__item-btn btn-resert">
-                  3 мес.
-                </button>
-                <button class="cart-list__item-btn btn-resert">
-                  6 мес.
-                </button>
-              </div>
-              <span class="cart-list__item-price">
-                814р.
-              </span>
-            </div>
-          </li>
+          <?php endforeach;?>
+
         </ul>
       </div>
     </section>
@@ -135,7 +144,7 @@ include ("app/controllers/users.php");
             Оплатить
           </a>
           <span class="payment__total-price">
-            Итого: 1330р.
+            Итого: 1390р.
           </span>
         </div>
       </div>

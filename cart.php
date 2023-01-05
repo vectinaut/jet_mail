@@ -1,5 +1,6 @@
 <?php
 include ("app/controllers/users.php");
+error_reporting(0);
 if (!isset($_COOKIE['user_id'])){
   echo "<h1>403 Error</h1>";
   exit();
@@ -23,7 +24,9 @@ $diff_items = array_diff($before_cart_ids, $cart_ids);
 if (!empty($diff_items)){
   echo "<script>alert('Некоторые товары закончились');</script>";
   for($i=0; $i<count($diff_items); $i++){
-    updateCart($_COOKIE['user_id'], $diff_items[$i], ['status'=>0]);
+    if ($diff_items[$i]){
+      updateCart($_COOKIE['user_id'], $diff_items[$i], ['status'=>0]);
+    }
   }
 }
 $_SESSION['cart'] = $cart_items;

@@ -1,5 +1,5 @@
 <?php
-$time = 18000;
+$time = 180000;
 session_start();
 
 
@@ -12,8 +12,6 @@ if (isset($_COOKIE['user_id'])) {
 if (!isset($_COOKIE['user_id'])){
   if (!$_COOKIE['close']){
       echo '<script>alert("Время сессии истекло. Пройдите авторизацию заново.");window.location.href = "log-out.php";</script>';
-
-  echo "ВСЁ. НЕТ КУКОВ!!";
   }
 
 }

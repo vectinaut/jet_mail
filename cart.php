@@ -1,5 +1,5 @@
 <?php
-include ("add_to_cart.php");
+include ("app/controllers/users.php");
 if (!isset($_COOKIE['user_id'])){
   echo "<h1>403 Error</h1>";
   exit();
@@ -127,7 +127,8 @@ $cart_items = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']])
     </section>
   <?php endif; ?>
 </main>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="assets/js/delete_from_cart.js"></script>
 <?php include ("app/include/footer.php")?>
 </body>
 </html>

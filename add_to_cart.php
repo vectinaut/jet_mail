@@ -7,8 +7,8 @@ if (isset($_GET['cart'])) {
       $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
       $pub = selectOnePublication(['publication_id'=>$id]);
       if (!empty($pub)){
-        $carts = selectAll('cart', [
-          'user_id'=>$_COOKIE['user_id'],
+        $carts = selectAll('cart',
+          ['user_id'=>$_COOKIE['user_id'],
           'publication_id'=>$id,
           'status'=>1]);
 

@@ -22,6 +22,7 @@ if (isset($_GET['cart'])) {
               'status' => 1
             ];
             updateCart($_COOKIE['user_id'], $id, ['status'=>0]);
+            $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
             echo json_encode(['code'=>'ok', 'answer'=>'Товар удален из корзины']);
 
           }else{

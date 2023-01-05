@@ -41,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
     $_SESSION['id']= $user['id'];
     $_SESSION['name']= $user['first_name'];
     $_SESSION['email']= $user['email'];
+    setcookie('user_id', $_SESSION['id'], time()+$time);
+    setcookie('close', 0, time()+99999);
     header('location: '."http://localhost/jet_mail/");
 //    tt($_SESSION);
 //    exit();
@@ -69,6 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-log'])){
     $_SESSION['id']= $existence['id'];
     $_SESSION['name']= $existence['first_name'];
     $_SESSION['email']= $existence['email'];
+    setcookie('user_id', $_SESSION['id'], time()+$time);
+    setcookie('close', 0, time()+9999);
     header('location: '."http://localhost/jet_mail/");
   }
   else{

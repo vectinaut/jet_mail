@@ -1,6 +1,22 @@
 <?php
-
+$time = 18000;
 session_start();
+
+
+//cookie
+if (isset($_COOKIE['user_id'])) {
+  setcookie('user_id', $_SESSION['id'], time()+$time);
+  header("Refresh: $time");
+//  echo "<script> setTimeout(function () {location.reload();}, 120010); </script>";
+}
+if (!isset($_COOKIE['user_id'])){
+  if (!$_COOKIE['close']){
+      echo '<script>alert("Время сессии истекло. Пройдите авторизацию заново.");window.location.href = "log-out.php";</script>';
+
+  echo "ВСЁ. НЕТ КУКОВ!!";
+  }
+
+}
 require ("connect.php");
 
 function tt($value){
@@ -214,7 +230,7 @@ function updateCart($user_id, $publication_id, $params){
   $str = '';
   foreach ($params as $key => $value) {
     if ($i === 0){
-      $str = $str . "$key='$value'";
+      $str = $str . "$key ='$value'";
     }else{
       $str = $str . ", $key='$value'";
     }

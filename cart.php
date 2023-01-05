@@ -1,6 +1,6 @@
 <?php
 include ("app/controllers/users.php");
-if (!isset($_SESSION['id'])){
+if (!isset($_COOKIE['user_id'])){
   echo "<h1>403 Error</h1>";
   exit();
 }

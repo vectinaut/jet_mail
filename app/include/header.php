@@ -7,13 +7,13 @@
             </a>
         </h1>
         <div class="header_btns">
-          <?php if(!isset($_SESSION['id'])): ?>
+          <?php if(!isset($_COOKIE['user_id'])): ?>
             <a href="log-in.php" class="header-btn">
                 Войти
             </a>
           <?php endif; ?>
 
-          <?php if(isset($_SESSION['id'])): ?>
+          <?php if(isset($_COOKIE['user_id'])): ?>
             <a href="cart.php" class="header-btn">
               Корзина
             </a>

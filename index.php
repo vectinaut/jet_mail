@@ -1,6 +1,7 @@
 <?php
 include ('app/database/db.php');
 $publications = selectAll('publication');
+
 //tt($publications);
 //exit();
 ?>

@@ -4,8 +4,29 @@ if (!isset($_COOKIE['user_id'])){
   echo "<h1>403 Error</h1>";
   exit();
 }
-$cart_items = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']]);
+if (!isset($_SESSION['cart'])){
+  $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
+}
+$cart_items = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
+$before_cart_ids = array();
+$cart_ids = array();
 
+foreach ($_SESSION['cart'] as $key => $value){
+  $before_cart_ids[] = $value['pub_id'];
+}
+
+foreach ($cart_items as $key => $value){
+  $cart_ids[] = $value['pub_id'];
+}
+
+$diff_items = array_diff($before_cart_ids, $cart_ids);
+if (!empty($diff_items)){
+  echo "<script>alert('Некоторые товары закончились');</script>";
+  for($i=0; $i<count($diff_items); $i++){
+    updateCart($_COOKIE['user_id'], $diff_items[$i], ['status'=>0]);
+  }
+}
+$_SESSION['cart'] = $cart_items;
 ?>
 
 <!DOCTYPE html>
@@ -48,15 +69,20 @@ $cart_items = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']])
           <?php foreach ($cart_items as $key => $value): ?>
             <li class="cart-list__item flex">
               <div class="cart-list__item-photo">
-                <img src="assets/img/posts/<?php echo $value['img']?>" alt="">
+                <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub_id'];?>">
+                  <img src="assets/img/posts/<?php echo $value['img']?>" alt="">
+                </a>
+
               </div>
               <div class="cart-list__item-content flex">
                 <div class="cart-list__item-header flex">
                   <h3 class="cart-list__item-title">
-                    <?php echo $value['pub_name']; ?>
+                    <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub_id'];?>">
+                      <?php echo $value['pub_name']; ?>
+                    </a>
                   </h3>
                   <form action="cart.php" type="post" class="cart-list__item-close-btn btn-resert">
-                    <button value="<?=$value['pub_id']?>" name="delete-item" class="cart-list__item-close-btn btn-resert" type="reset">
+                    <button name="delete-item" class="cart-list__item-close-btn btn-resert" type="reset">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.929612 13.6568C0.539088 14.0473 0.539088 14.6805 0.929612 15.071C1.32014 15.4615 1.9533 15.4615 2.34383 15.071L8.00085 9.41399L13.658 15.0711C14.0485 15.4616 14.6817 15.4616 15.0722 15.0711C15.4627 14.6806 15.4627 14.0474 15.0722 13.6569L9.41506 7.99978L15.0717 2.34309C15.4623 1.95257 15.4623 1.3194 15.0717 0.928879C14.6812 0.538355 14.0481 0.538355 13.6575 0.928879L8.00085 6.58557L2.34427 0.928985C1.95374 0.538461 1.32058 0.538461 0.930055 0.928985C0.539531 1.31951 0.539531 1.95267 0.930055 2.3432L6.58663 7.99978L0.929612 13.6568Z" fill="#A0A0A4"/>
                       </svg>

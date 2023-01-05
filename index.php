@@ -1,6 +1,6 @@
 <?php
 include ('app/database/db.php');
-$publications = selectAll('publication');
+$publications = selectAllPublications(['amount'=>0]);
 
 //tt($publications);
 //exit();

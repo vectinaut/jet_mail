@@ -103,7 +103,8 @@ function selectOnePublication($params=[]){
     pub.description,
     pub.price,
     pub.img,
-    publisher.name as publisher_name
+    publisher.name as publisher_name,
+    pub.amount
        FROM publication as pub 
     JOIN publisher ON pub.publisher_id = publisher.publisher_id";
   if(!empty($params)){
@@ -121,6 +122,7 @@ function selectOnePublication($params=[]){
 
     }
   }
+
   $sql = $sql . " LIMIT 1";
 
   $query = $pdo->prepare($sql);
@@ -131,8 +133,36 @@ function selectOnePublication($params=[]){
   return $query->fetch();
 }
 
+function selectAllPublications($params=[]){
+  global $pdo;
 
-function selectAllCarts($params=[]){
+  $sql = "SELECT * FROM publication";
+  if(!empty($params)){
+    $i = 0;
+    foreach ($params as $key => $value) {
+      if (!is_numeric($value)){
+        $value = "'".$value."'";
+      }
+      if ($i===0){
+        $sql = $sql . " WHERE $key>$value";
+      }else{
+        $sql = $sql . " AND $key>$value";
+      }
+      $i++;
+
+    }
+  }
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
+
+  return $query->fetchAll();
+}
+
+
+function selectAllCarts($params=[], $less=False){
   global $pdo;
 
   $sql = "SELECT 
@@ -162,6 +192,9 @@ function selectAllCarts($params=[]){
       $i++;
 
     }
+  }
+  if ($less){
+    $sql = $sql . " AND amount > 0";
   }
 
   $query = $pdo->prepare($sql);

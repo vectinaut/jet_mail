@@ -8,7 +8,7 @@ $publication = selectOnePublication(['publication_id'=>$post]);
 //exit();
 ?>
 
-<?php if (empty($publication)):?>
+<?php if (empty($publication) && $publication['amount']==0):?>
 <h1>404 Not Found</h1>
 <?php exit(); ?>
 <?php endif;?>

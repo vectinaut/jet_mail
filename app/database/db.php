@@ -131,6 +131,7 @@ function selectOnePublication($params=[]){
   return $query->fetch();
 }
 
+
 function selectAllCarts($params=[]){
   global $pdo;
 

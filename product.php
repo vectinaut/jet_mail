@@ -73,5 +73,7 @@ $publication = selectOnePublication(['publication_id'=>$post]);
     </section>
   </main>
 <?php include ("app/include/footer.php")?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="assets/js/add_to_cart.js"></script>
 </body>
 </html>

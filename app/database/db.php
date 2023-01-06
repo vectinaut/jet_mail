@@ -159,6 +159,20 @@ function selectAllPublications($params=[]){
   return $query->fetchAll();
 }
 
+function selectOneAmount($pub_id){
+  global $pdo;
+
+  $sql = "SELECT amount-1 FROM publication WHERE publication_id=$pub_id";
+  $sql = $sql . " LIMIT 1";
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
+
+  return $query->fetch();
+}
+
 
 function selectAllCarts($params=[], $less=False){
   global $pdo;
@@ -254,6 +268,29 @@ function update($table, $id, $params){
     $query->execute();
 
     dbCheckError($query);
+}
+
+function updatePublication($pub_id, $params){
+  global $pdo;
+
+  $i = 0;
+  $str = '';
+  foreach ($params as $key => $value) {
+    if ($i === 0){
+      $str = $str . "$key='$value'";
+    }else{
+      $str = $str . ", $key='$value'";
+    }
+    $i++;
+
+  }
+
+  $sql = "UPDATE publication SET $str WHERE publication_id = $pub_id";
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
 }
 
 function updateCart($user_id, $publication_id, $params){

@@ -1,5 +1,5 @@
 $(function (){
-    $('.cart-list__item-btn').on('click', function (e) {
+    $('.cart-list__item-btn').on('click', function () {
         let id = parseInt($(this)[0].value);
         let amount = parseInt($(this)[0].innerHTML);
 

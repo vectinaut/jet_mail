@@ -1,20 +1,28 @@
 $(function (){
     $('.payment__main-btn').on('click', function (e) {
         e.preventDefault();
-
-        const qty = document.querySelectorAll('.cart-list__item-btn-active');
-        console.log(qty);
-        for (let mon in qty){
-            let qt = parseInt(qty[mon].innerHTML);
-            console.log(qt);
+        let type = $(this)[0].innerHTML;
+        // console.log(type);
+        if (type === "Заказать"){
+            // console.log(type);
+            $.ajax({
+                url: "add_order.php",
+                type: 'GET',
+                data: {cart: 'add_order', type: 'cash' },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code === 'error'){
+                        alert(res.answer);
+                    }else if (res.code === 'reload'){
+                        alert(res.answer);
+                        window.location.href = 'http://localhost/jet_mail/cart.php';
+                    }else if(res.code === 'success'){
+                        alert(res.answer);
+                        window.location.href = 'http://localhost/jet_mail/personal.php';
+                    }
+                }
+            });
         }
-
-        // let type_order = $(this)[0].querySelectorAll(".cart-list__item-btn-active");
-        // for (mon in type_order){
-        //     console.log(type_order[mon]);
-        // }
-        // console.log(type_order);
-
 
     });
 });

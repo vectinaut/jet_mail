@@ -11,34 +11,39 @@ if (isset($_GET['cart'])) {
 
         // Проверка длительности
         if ($amount === 1 || $amount == 3 || $amount === 6){
+          $users = selectAll('user', ['id'=>$_COOKIE['user_id']]);
+          if (!empty($users)){
+            $pub = selectOnePublication(['publication_id'=>$id]);
+            // Проверка наличия такого товара в БД
+            if (!empty($pub) && $pub['amount']>0){
 
-          $pub = selectOnePublication(['publication_id'=>$id]);
-          // Проверка наличия такого товара в БД
-          if (!empty($pub) && $pub['amount']>0){
+              $carts = selectAll('cart',
+                ['user_id'=>$_COOKIE['user_id'],
+                  'publication_id'=>$id,
+                  'status'=>1]);
 
-            $carts = selectAll('cart',
-              ['user_id'=>$_COOKIE['user_id'],
-                'publication_id'=>$id,
-                'status'=>1]);
-
-            // Есть такой товар в корзине
-            if(!empty($carts)){
-              $params = [
-                'user_id' => $_COOKIE['user_id'],
-                'publication_id' => $id,
-                'status' => 1
-              ];
-              updateCart($_COOKIE['user_id'], $id, ['quantity'=>$amount]);
-              $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
+              // Есть такой товар в корзине
+              if(!empty($carts)){
+                $params = [
+                  'user_id' => $_COOKIE['user_id'],
+                  'publication_id' => $id,
+                  'status' => 1
+                ];
+                updateCart($_COOKIE['user_id'], $id, ['quantity'=>$amount]);
+                $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
 //              echo json_encode(['code'=>'ok', 'answer'=>'Товар удален из корзины']);
 
+              }else{
+                echo json_encode(['code'=>'ok', 'answer'=>'Такого товара нет в корзине']);
+              }
+              echo json_encode(['code'=>'ok', 'answer'=>'Такой товар есть в БД']);
             }else{
-              echo json_encode(['code'=>'ok', 'answer'=>'Такого товара нет в корзине']);
+              echo json_encode(['code'=>'error', 'answer'=>'Такого товара нет в БД']);
             }
-            echo json_encode(['code'=>'ok', 'answer'=>'Такой товар есть в БД']);
           }else{
-            echo json_encode(['code'=>'error', 'answer'=>'Такого товара нет в БД']);
+            echo json_encode(['code'=>'error', 'answer'=>'Такого пользователя не существует']);
           }
+
         }else{
           echo json_encode(['code'=>'error', 'answer'=>'Неверно задана длительность']);
         }

@@ -4,15 +4,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentMainBtn = document.querySelector('.payment__main-btn');
   const totalPrice = document.querySelector('.payment__total-price');
   const cartItems = document.querySelectorAll('.cart-list__item');
+  let cartItemsPrice = [];
   let summ = 0;
 
   for (let i = 0; i < cartItems.length; i++){
-    let price = parseInt(cartItems[i].querySelector('.cart-list__item-price').innerHTML);
-    summ = summ + price;
+    cartItemsPrice.push(parseInt(cartItems[i].querySelector('.cart-list__item-price').innerHTML))
+    let mounthBtn = cartItems[i].querySelector('.cart-list__item-btn-active');
+    cartItems[i].querySelector('.cart-list__item-price').innerHTML = countPrice(mounthBtn, cartItemsPrice[i])+'р.';
+    summ = summ + parseInt(countPrice(mounthBtn, cartItemsPrice[i]));
   };
+  // console.log(cartItemsPrice);
 
-  totalPrice.innerHTML = 'Итого: '+`${summ}`+'р.';
+  totalPrice.innerHTML = 'Итого: '+`${summ}`+'р.'
 
+  for (let i = 0; i < cartItems.length; i++){
+
+    const cartBtns = cartItems[i].querySelectorAll('.cart-list__item-btn');
+
+    cartBtns.forEach((cartBtn) =>{
+      cartBtn.addEventListener('click', (event) =>{
+        const currentPrice = parseInt(cartItems[i].querySelector('.cart-list__item-price').innerHTML);
+        for(let j in cartBtns){
+          if(event.currentTarget === cartBtns[j]){
+            cartBtns[j].classList.add('cart-list__item-btn-active');
+            cartItems[i].querySelector('.cart-list__item-price').innerHTML = countPrice(cartBtns[j], cartItemsPrice[i])+'р.';
+            totalPrice.innerHTML = 'Итого: '+`${parseInt(totalPrice.innerHTML.trim().split(' ')[1])- currentPrice + parseInt(countPrice(cartBtns[j], cartItemsPrice[i]))}`+'р.';
+          } else if(cartBtns[j].classList.contains('cart-list__item-btn-active')){
+            cartBtns[j].classList.remove('cart-list__item-btn-active');
+          };
+        };
+      });
+    });
+
+    cartItems[i].querySelector('.cart-list__item-close-btn').addEventListener('click', ()=>{
+      cartItems[i].remove();
+      const currentPrice = parseInt(cartItems[i].querySelector('.cart-list__item-price').innerHTML);
+      totalPrice.innerHTML = 'Итого: '+`${parseInt(totalPrice.innerHTML.trim().split(' ')[1])- currentPrice}`+'р.'
+    })
+  };
 
 
   paymentBtns[0].addEventListener('click', () =>{
@@ -26,42 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
     paymentMainBtn.innerHTML = 'Заказать';
   });
 
-
-
-
-  cartItems.forEach((cartItem)=>{
-    const cartBtns = cartItem.querySelectorAll('.cart-list__item-btn');
-    const price = parseInt(cartItem.querySelector('.cart-list__item-price').innerHTML);
-
-    cartBtns.forEach((cartBtn) =>{
-      cartBtn.addEventListener('click', (event) =>{
-        const currentPrice = parseInt(cartItem.querySelector('.cart-list__item-price').innerHTML);
-        for(let i in cartBtns){
-          if(event.currentTarget === cartBtns[i]){
-            cartBtns[i].classList.add('cart-list__item-btn-active');
-            cartItem.querySelector('.cart-list__item-price').innerHTML = countPrice(cartBtns[i], price)+'р.';
-            totalPrice.innerHTML = 'Итого: '+`${parseInt(totalPrice.innerHTML.trim().split(' ')[1])- currentPrice + parseInt(countPrice(cartBtns[i], price))}`+'р.';
-          } else{
-            cartBtns[i].classList.remove('cart-list__item-btn-active');
-          };
-        };
-      });
-    });
-
-    cartItem.querySelector('.cart-list__item-close-btn').addEventListener('click', ()=>{
-      cartItem.remove();
-      const currentPrice = parseInt(cartItem.querySelector('.cart-list__item-price').innerHTML);
-      totalPrice.innerHTML = 'Итого: '+`${parseInt(totalPrice.innerHTML.trim().split(' ')[1])- currentPrice}`+'р.'
-    })
-
-  });
-
-  paymentMainBtn.addEventListener('click', (event) =>{
-    if(paymentMainBtn.innerHTML === 'Заказать'){
-      event.preventDefault();
-      alert( "Товары заказаны" );
-    };
-  });
+  // paymentMainBtn.addEventListener('click', (event) =>{
+  //   if(paymentMainBtn.innerHTML === 'Заказать'){
+  //     event.preventDefault();
+  //     alert( "Товары заказаны" );
+  //   };
+  // });
 
   function countPrice(el, price){
     const month = parseInt(el.innerHTML);

@@ -162,6 +162,7 @@ $_SESSION['cart'] = $cart_items;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="assets/js/delete_from_cart.js"></script>
 <script src="assets/js/make_amount.js"></script>
+<script src="assets/js/order.js"></script>
 <?php include ("app/include/footer.php")?>
 </body>
 </html>

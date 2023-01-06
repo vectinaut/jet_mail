@@ -9,7 +9,7 @@ $(function (){
             data: {cart: 'add', id: id},
             dataType: 'json',
             success: function (res) {
-                if (res.code == 'ok'){
+                if (res.code === 'ok'){
                     alert(res.answer);
                 } else {
                     alert(res.answer);

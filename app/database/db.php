@@ -159,20 +159,6 @@ function selectAllPublications($params=[]){
   return $query->fetchAll();
 }
 
-function selectOneAmount($pub_id){
-  global $pdo;
-
-  $sql = "SELECT amount-1 FROM publication WHERE publication_id=$pub_id";
-  $sql = $sql . " LIMIT 1";
-
-  $query = $pdo->prepare($sql);
-  $query->execute();
-
-  dbCheckError($query);
-
-  return $query->fetch();
-}
-
 
 function selectAllCarts($params=[], $less=False){
   global $pdo;
@@ -208,6 +194,41 @@ function selectAllCarts($params=[], $less=False){
   }
   if ($less){
     $sql = $sql . " AND amount > 0";
+  }
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
+
+  return $query->fetchAll();
+}
+
+function selectAllSubscription($params=[]){
+  global $pdo;
+
+  $sql = "SELECT
+              orders.order_id,
+              orders.user_id,
+              publication_id AS pub_id,
+              duration,
+              created
+          FROM orders
+          JOIN order_details od ON orders.order_id = od.order_id";
+  if(!empty($params)){
+    $i = 0;
+    foreach ($params as $key => $value) {
+      if (!is_numeric($value)){
+        $value = "'".$value."'";
+      }
+      if ($i===0){
+        $sql = $sql . " WHERE $key=$value";
+      }else{
+        $sql = $sql . " AND $key=$value";
+      }
+      $i++;
+
+    }
   }
 
   $query = $pdo->prepare($sql);

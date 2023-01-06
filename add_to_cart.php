@@ -11,21 +11,24 @@ if (isset($_GET['cart'])) {
           ['user_id'=>$_COOKIE['user_id'],
           'publication_id'=>$id,
           'status'=>1]);
+        $active = check_subscription($_COOKIE['user_id'], $type='active');
+        if (empty($active) || !in_array($id, $active['pub_id'])){
+          // Проверка добавлен ли товар уже в корзину
+          if(empty($carts)){
+            $params = [
+              'user_id' => $_COOKIE['user_id'],
+              'publication_id' => $id,
+              'status' => 1
+            ];
+            insert('cart', $params);
+            echo json_encode(['code'=>'ok', 'answer'=>'Товар добавлен в корзину']);
 
-        // Проверка добавлен ли товар уже в корзину
-        if(empty($carts)){
-          $params = [
-            'user_id' => $_COOKIE['user_id'],
-            'publication_id' => $id,
-            'status' => 1
-          ];
-          insert('cart', $params);
-          echo json_encode(['code'=>'ok', 'answer'=>'Товар добавлен в корзину']);
-
+          }else{
+            echo json_encode(['code'=>'ok', 'answer'=>'Товар ранее уже был добавлен в корзину']);
+          }
         }else{
-          echo json_encode(['code'=>'ok', 'answer'=>'Товар ранее уже был добавлен в корзину']);
+          echo json_encode(['code'=>'error', 'answer'=>'У Вас уже есть подписка на это издание']);
         }
-
       }else{
         echo json_encode(['code'=>'error', 'answer'=>'Ошибка товара']);
       }

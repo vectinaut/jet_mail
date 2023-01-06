@@ -82,3 +82,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-log'])){
 
 
 }
+
+function check_subscription($user_id, $type){
+  $all_subs = selectAllSubscription(['user_id'=>$user_id]);
+//  $current_date = date('Y.m.d', time());
+  $current_date = date("Y.m.d", strtotime("+5 month"));
+  $expired = [];
+  $active = [];
+  foreach ($all_subs as $key=>$value){
+    $duration = $value['duration']+1;
+    $dateAt = strtotime("+$duration MONTH", strtotime($value['created']));
+    $newDate = date('Y.m.d', $dateAt);
+
+    if($current_date >= $newDate){
+      $expired['pub_id'][] = $value['pub_id'];
+      $expired['duration'][] = $value['duration'];
+    }else{
+      $active['pub_id'][] = $value['pub_id'];
+      $active['duration'][] = $value['duration'];
+    }
+  }
+  if ($type==="active"){
+    return $active;
+  }else{
+    return $expired;
+  }
+}

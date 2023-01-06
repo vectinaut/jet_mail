@@ -5,6 +5,11 @@ if (isset($_GET['cart'])) {
   switch ($_GET['cart']) {
     case 'add_order':
       if(isset($_GET['type'])){
+        if($_GET['type'] === 'cash'){
+          $type = 0;
+        }else{
+          $type = 1;
+        }
 //        echo json_encode(['code'=>'ok', 'answer'=>'Кэш']);
         $user_id = $_COOKIE['user_id'];
 //        echo json_encode(['code'=>'error', 'answer'=>$user_id]);
@@ -29,7 +34,7 @@ if (isset($_GET['cart'])) {
             $order_id = insert('orders', [
               'user_id'=>$_COOKIE['user_id'],
               'status'=>1,
-              'type'=>0,
+              'type'=>$type,
               'total'=>$total
             ]);
 

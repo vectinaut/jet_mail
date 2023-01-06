@@ -43,6 +43,8 @@ include ("app/controllers/users.php");
       </div>
     </section>
   </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="assets/js/order.js"></script>
 <?php include ("app/include/footer.php")?>
 </body>
 </html>

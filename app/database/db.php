@@ -170,7 +170,8 @@ function selectAllCarts($params=[], $less=False){
     pub.name as pub_name,
     pub.price,
     cart.status as cart_status,
-    pub.img
+    pub.img,
+    cart.quantity
     
     
     FROM cart 

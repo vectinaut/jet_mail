@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     summ = summ + price;
   };
 
-  totalPrice.innerHTML = 'Итого: '+`${summ}`+'р.'
+  totalPrice.innerHTML = 'Итого: '+`${summ}`+'р.';
 
 
 

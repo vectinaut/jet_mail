@@ -1,5 +1,5 @@
 $(function (){
-    $('.btn-resert').on('click', function (e) {
+    $('.cart-list__item-close-btn').on('click', function (e) {
         e.preventDefault();
         let id = $(this)[0].value;
 

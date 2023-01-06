@@ -5,6 +5,7 @@ if (!isset($_COOKIE['user_id'])){
   echo "<h1>403 Error</h1>";
   exit();
 }
+$duration = [1, 3, 6];
 if (!isset($_SESSION['cart'])){
   $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
 }
@@ -97,15 +98,17 @@ $_SESSION['cart'] = $cart_items;
                 Оформить подписку на:
               </span>
                 <div class="cart-list__item-btns flex">
-                  <button class="cart-list__item-btn btn-resert cart-list__item-btn-active">
-                    1 мес.
+                  <?php for($i=0; $i < 3; $i++):?>
+                  <?php if($value['quantity'] == $duration[$i]): ?>
+                  <button value="<?php echo $value['pub_id']; ?>" class="cart-list__item-btn btn-resert cart-list__item-btn-active">
+                    <?php echo $duration[$i]; ?> мес.
                   </button>
-                  <button class="cart-list__item-btn btn-resert">
-                    3 мес.
+                  <?php else: ?>
+                  <button value="<?php echo $value['pub_id']; ?>" class="cart-list__item-btn btn-resert">
+                    <?php echo $duration[$i]; ?> мес.
                   </button>
-                  <button class="cart-list__item-btn btn-resert">
-                    6 мес.
-                  </button>
+                  <?php endif; ?>
+                  <?php endfor; ?>
                 </div>
                 <span class="cart-list__item-price">
                 <?php echo $value['price']?>р.
@@ -158,6 +161,7 @@ $_SESSION['cart'] = $cart_items;
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="assets/js/delete_from_cart.js"></script>
+<script src="assets/js/make_amount.js"></script>
 <?php include ("app/include/footer.php")?>
 </body>
 </html>

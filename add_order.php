@@ -52,7 +52,11 @@ if (isset($_GET['cart'])) {
                 $pub = selectOne('publication', ['publication_id'=>$value['pub_id']]);
                 $new_amount = $pub['amount'] - 1;
 
+                lock('publication');
+//                sleep(5);
                 updatePublication($value['pub_id'], ['amount'=>$new_amount]);
+                unlock();
+
 //                updateCart($_COOKIE['user_id'], $value['pub_id'], ['status'=>0]);
               }
               $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);

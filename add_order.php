@@ -53,8 +53,9 @@ if (isset($_GET['cart'])) {
                 $new_amount = $pub['amount'] - 1;
 
                 lock('publication');
-//                sleep(5);
+                
                 updatePublication($value['pub_id'], ['amount'=>$new_amount]);
+                sleep(2);
                 unlock();
 
 //                updateCart($_COOKIE['user_id'], $value['pub_id'], ['status'=>0]);

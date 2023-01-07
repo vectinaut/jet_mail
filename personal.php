@@ -59,11 +59,10 @@ if($expired){
         </h2>
         <ul class="subscribes-list list-resert flex">
           <?php foreach ($active_pub as $key=>$value): ?>
+          <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub']['publication_id'];?>">
           <li class="subscribes-list__item flex">
             <div class="subscribes-list__item-photo">
-              <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub']['publication_id'];?>">
-                <img src="assets/img/posts/<?=$value['pub']['img'] ?>" alt="">
-              </a>
+              <img src="assets/img/posts/<?=$value['pub']['img'] ?>" alt="">
             </div>
             <div class="subscribes-list__item-content flex">
               <h3 class="subscribes-list__item-title">
@@ -86,6 +85,7 @@ if($expired){
               </span>
             </div>
           </li>
+          </a>
           <?php endforeach; ?>
         </ul>
       </div>

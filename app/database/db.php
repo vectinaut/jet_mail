@@ -1,5 +1,5 @@
 <?php
-$time = 18000;
+$time = 180000;
 session_start();
 
 

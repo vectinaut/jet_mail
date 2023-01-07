@@ -560,6 +560,7 @@ h1, h2, h3, p{
   border-radius: 5px;
   background-color: #FFF;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
 }
 
 .subscribes-list__item-photo{

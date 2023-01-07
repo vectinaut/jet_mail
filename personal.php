@@ -5,8 +5,8 @@ if (!isset($_COOKIE['user_id'])){
   exit();
 }
 
-$active = check_subscription($_COOKIE['user_id'], $type='active');
-$expired = check_subscription($_COOKIE['user_id'], $type='expired');
+$active = check_subscription($_COOKIE['user_id'], $type='active', $future);
+$expired = check_subscription($_COOKIE['user_id'], $type='expired', $future);
 
 $active_pub = [];
 $expired_pub = [];
@@ -15,6 +15,9 @@ if($active){
     $pub = selectOne('publication',['publication_id'=>$active['pub_id'][$i]]);
     $active_pub[$i]['pub'] = $pub;
     $active_pub[$i]['duration'] = $active['duration'][$i];
+
+    $active_pub[$i]['since'] = $active['since'][$i];
+    $active_pub[$i]['until'] = $active['until'][$i];
   }
 }
 
@@ -23,6 +26,9 @@ if($expired){
     $pub = selectOne('publication',['publication_id'=>$expired['pub_id'][$i]]);
     $expired_pub[$i]['pub'] = $pub;
     $expired_pub[$i]['duration'] = $expired['duration'][$i];
+
+    $expired_pub[$i]['since'] = $expired['since'][$i];
+    $expired_pub[$i]['until'] = $expired['until'][$i];
   }
 }
 
@@ -75,6 +81,9 @@ if($expired){
                 <?=$value['duration']?> месяцев
                 <?php endif; ?>
               </span>
+              <span class="subscribes-list__item-period">
+                С: <?=$value['since']?> До: <?=$value['until']?>
+              </span>
             </div>
           </li>
           <?php endforeach; ?>
@@ -109,6 +118,9 @@ if($expired){
                 <?php else: ?>
                   <?=$value['duration']?> месяцев
                 <?php endif; ?>
+              </span>
+              <span class="subscribes-list__item-period">
+                С: <?=$value['since']?> До: <?=$value['until']?>
               </span>
             </div>
           </li>

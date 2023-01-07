@@ -1,5 +1,5 @@
 <?php
-$time = 120;
+$time = 180000;
 session_start();
 
 
@@ -230,6 +230,7 @@ function selectAllSubscription($params=[]){
 
     }
   }
+  $sql = $sql ." ORDER BY orders.created";
 
   $query = $pdo->prepare($sql);
   $query->execute();
@@ -351,4 +352,17 @@ function delete($table, $id){
     $query->execute();
 
     dbCheckError($query);
+}
+
+function triggerCart($table, $id){
+  global $pdo;
+
+
+
+  $sql = "CREATE TRIGGER ";
+
+  $query = $pdo->prepare($sql);
+  $query->execute();
+
+  dbCheckError($query);
 }

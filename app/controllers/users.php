@@ -2,6 +2,7 @@
 include ("app/database/db.php");
 
 $errMsg = '';
+$future = 0;
 
 // Код для регистрации
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
@@ -83,23 +84,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-log'])){
 
 }
 
-function check_subscription($user_id, $type){
+function check_subscription($user_id, $type, $future=0){
   $all_subs = selectAllSubscription(['user_id'=>$user_id]);
-  $current_date = date('Y.m.d', time());
-//  $current_date = date("Y.m.d", strtotime("+5 month"));
+
+  if ($future){
+    $current_date = date("Y-m-d", strtotime("+$future month", time()));
+  }else{
+    $current_date = date('Y-m-d', time());
+  }
+
   $expired = [];
   $active = [];
   foreach ($all_subs as $key=>$value){
+    $dataSince = date('Y-m-d', strtotime("+1 MONTH", strtotime($value['created'])));
+
+//    $dataSince = date('Y-m-d', strtotime("+10 days", strtotime($value['created'])));
+
+//    $dataSinceDataTime = new DateTime($dataSince);
+//    $dataSinceDataTime = $dataSinceDataTime->modify('+10 day');
+//    $dataSince = $dataSinceDataTime->format('Y-m-d');
+
     $duration = $value['duration']+1;
     $dateAt = strtotime("+$duration MONTH", strtotime($value['created']));
-    $newDate = date('Y.m.d', $dateAt);
+    $newDate = date('Y-m-d', $dateAt);
 
-    if($current_date >= $newDate){
+    $year = explode("-", $newDate)[0];
+    $month = explode("-", $newDate)[1];
+    $new_str_date = strtotime($year."-".$month."-01");
+
+    $newDate = date('Y-m-d', $new_str_date);
+
+    $newUntilDataTime = new DateTime($newDate);
+    $newUntilDataTime = $newUntilDataTime->modify('-1 day');
+    $newUntilDataTime = $newUntilDataTime->format('Y-m-d');
+
+    if($current_date >= $newUntilDataTime){
       $expired['pub_id'][] = $value['pub_id'];
       $expired['duration'][] = $value['duration'];
+
+      $year_since = explode("-", $dataSince)[0];
+      $month_since = explode("-", $dataSince)[1];
+      $expired['since'][] = $year_since."-".$month_since."-01";
+
+      $expired['until'][] = $newUntilDataTime;
+
     }else{
       $active['pub_id'][] = $value['pub_id'];
       $active['duration'][] = $value['duration'];
+
+      $year_since = explode("-", $dataSince)[0];
+      $month_since = explode("-", $dataSince)[1];
+      $active['since'][] = $year_since."-".$month_since."-01";
+
+//      $year_until = explode("-", $newUntilDataTime)[0];
+//      $month_until = explode("-", $newUntilDataTime)[1];
+//      $active['until'][] = $year_until."-".$month_until."-01";
+      $active['until'][] = $newUntilDataTime;
+
+
+
     }
   }
   if ($type==="active"){

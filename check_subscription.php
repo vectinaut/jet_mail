@@ -54,20 +54,37 @@ include("app/controllers/users.php");
 //    return $expired;
 //  }
 //}
-$active = check_subscription($_COOKIE['user_id'], $type='active');
-$expired = check_subscription($_COOKIE['user_id'], $type='expired');
+//$active = check_subscription($_COOKIE['user_id'], $type='active');
+//$expired = check_subscription($_COOKIE['user_id'], $type='expired');
 
 $active_pub = [];
 $expired_pub = [];
 //tt($expired);
-if($active){
-  for ($i=0; $i<count($active['pub_id']); $i++){
-    $pub = selectOne('publication',['publication_id'=>$active['pub_id'][$i]]);
-    $active_pub[$i]['pub'] = $pub;
-    $active_pub[$i]['duration'] = $active['duration'][$i];
-  }
-}
-tt($active);
+//if($active){
+//  for ($i=0; $i<count($active['pub_id']); $i++){
+//    $pub = selectOne('publication',['publication_id'=>$active['pub_id'][$i]]);
+//    $active_pub[$i]['pub'] = $pub;
+//    $active_pub[$i]['duration'] = $active['duration'][$i];
+//  }
+//}
+
+
+
+
+$current_date = date('Y-m-d', time());
+$new_date= date("Y-m-d", strtotime("+2 month"));
+print_r($current_date." ".$new_date."\n");
+
+
+$date_time_current = new DateTime($current_date);
+$date_time_new = new DateTime("2022-02-01");
+$interval = $date_time_current->diff($date_time_new)->y;
+print_r(time());
+
+
+
+
+//tt($active);
 //foreach ($active_pub as $key=>$value){
 //  tt($value['pub']);
 //}

@@ -38,8 +38,6 @@ if (isset($_GET['cart'])) {
               'total'=>$total
             ]);
 
-
-
             //Проверка добавления в заказ
             if ($order_id){
               foreach ($cart_items as $key=>$value){
@@ -55,7 +53,7 @@ if (isset($_GET['cart'])) {
                 $new_amount = $pub['amount'] - 1;
 
                 updatePublication($value['pub_id'], ['amount'=>$new_amount]);
-                updateCart($_COOKIE['user_id'], $value['pub_id'], ['status'=>0]);
+//                updateCart($_COOKIE['user_id'], $value['pub_id'], ['status'=>0]);
               }
               $_SESSION['cart'] = selectAllCarts(['cart.status'=>1, 'user_id'=>$_COOKIE['user_id']], $less=True);
               echo json_encode(['code'=>'success', 'answer'=>'Товары заказаны']);

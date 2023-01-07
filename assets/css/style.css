@@ -616,9 +616,11 @@ h1, h2, h3, p{
 
 .subscribes-list__item-period{
   /*align-self: flex-end;*/
+  margin-top: 3px;
   font-size: 16px;
   line-height: 14px;
   color: #333;
+
 }
 
 .non-subscribes-list__item-period{

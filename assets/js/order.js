@@ -1,10 +1,12 @@
 $(function (){
     $('.payment__main-btn').on('click', function (e) {
-        // e.preventDefault();
+
         let type = $(this)[0].innerHTML;
         // console.log(type);
         if (type === "Заказать"){
+            e.preventDefault();
             // console.log(type);
+
             $.ajax({
                 url: "add_order.php",
                 type: 'GET',
@@ -20,6 +22,9 @@ $(function (){
                         alert(res.answer);
                         window.location.href = 'http://localhost/jet_mail/personal.php';
                     }
+                },
+                error: function () {
+                    alert('Error');
                 }
             });
         }

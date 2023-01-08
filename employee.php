@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search-btn'])){
     $wrongMsg = 'Введите почту пользователя';
   }
 //  unset($_POST['search-btn']);
-  if (!empty($user)){
+  else if (!empty($user)){
 
     $user_name = $user['first_name'].". ";
     $active = check_subscription($user['id'], $type='active', $future);

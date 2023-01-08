@@ -46,10 +46,10 @@ $(function (){
                         alert(res.answer);
                     }else if (res.code === 'reload'){
                         alert(res.answer);
-                        window.location.href = 'http://localhost/jet_mail/cart.php';
+                        window.location.href = 'cart.php';
                     }else if(res.code === 'success'){
                         alert(res.answer);
-                        window.location.href = 'http://localhost/jet_mail/personal.php';
+                        window.location.href = 'personal.php';
                     }
                 }
             });

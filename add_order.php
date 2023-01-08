@@ -1,5 +1,9 @@
 <?php
 include ("app/controllers/users.php");
+if (!isset($_COOKIE['user_id']) || $_SESSION['admin']){
+  echo "<h1>403 Error</h1>";
+  exit();
+}
 
 if (isset($_GET['cart'])) {
   switch ($_GET['cart']) {
@@ -7,8 +11,10 @@ if (isset($_GET['cart'])) {
       if(isset($_GET['type'])){
         if($_GET['type'] === 'cash'){
           $type = 0;
+          $status = 0;
         }else{
           $type = 1;
+          $status = 1;
         }
 //        echo json_encode(['code'=>'ok', 'answer'=>'Кэш']);
         $user_id = $_COOKIE['user_id'];
@@ -33,7 +39,7 @@ if (isset($_GET['cart'])) {
 
             $order_id = insert('orders', [
               'user_id'=>$_COOKIE['user_id'],
-              'status'=>1,
+              'status'=>$status,
               'type'=>$type,
               'total'=>$total
             ]);
@@ -53,7 +59,7 @@ if (isset($_GET['cart'])) {
                 $new_amount = $pub['amount'] - 1;
 
                 lock('publication');
-                
+
                 updatePublication($value['pub_id'], ['amount'=>$new_amount]);
                 sleep(2);
                 unlock();

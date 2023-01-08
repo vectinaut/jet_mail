@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
   $phone_number = trim($_POST['phone-number']);
   $email = trim($_POST['email']);
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $status = '1';
+  $status = '0';
 
   if ($name === '' || $phone_number === '' || $email === '' || $password === '') {
     $errMsg = "Не все поля заполнены!";
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
     $_SESSION['email']= $user['email'];
     setcookie('user_id', $_SESSION['id'], time()+$time);
     setcookie('close', 0, time()+99999);
-    header('location: '."http://localhost/jet_mail/");
+    header('location: '."index.php");
 //    tt($_SESSION);
 //    exit();
   }
@@ -72,9 +72,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-log'])){
     $_SESSION['id']= $existence['id'];
     $_SESSION['name']= $existence['first_name'];
     $_SESSION['email']= $existence['email'];
+    $_SESSION['admin'] = $existence['status'];
+
     setcookie('user_id', $_SESSION['id'], time()+$time);
     setcookie('close', 0, time()+9999);
-    header('location: '."http://localhost/jet_mail/");
+
+    if (!$_SESSION['admin']){
+      header('location: '."index.php");
+    }else{
+      header('location: '."employee.php");
+    }
   }
   else{
     $errMsg = "Почта или пароль введены неверно!";
@@ -131,6 +138,7 @@ function check_subscription($user_id, $type, $future=0){
     }else{
       $active['pub_id'][] = $value['pub_id'];
       $active['duration'][] = $value['duration'];
+      $active['status'][] = $value['status'];
 
       $year_since = explode("-", $dataSince)[0];
       $month_since = explode("-", $dataSince)[1];

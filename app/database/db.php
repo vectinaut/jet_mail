@@ -212,7 +212,8 @@ function selectAllSubscription($params=[]){
               orders.user_id,
               publication_id AS pub_id,
               duration,
-              created
+              created,
+              status
           FROM orders
           JOIN order_details od ON orders.order_id = od.order_id";
   if(!empty($params)){

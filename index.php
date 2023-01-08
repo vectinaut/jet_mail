@@ -48,7 +48,7 @@ $publications = selectAllPublications(['amount'=>0]);
             <div class="publications-list__item-photo">
               <img src="assets/img/posts/<?php echo $value['img']?>" alt="">
             </div>
-            <a href=<?= "http://localhost/jet_mail/"."product.php?post=".$value['publication_id'];?> class="publications-list__item-title">
+            <a href=<?= "product.php?post=".$value['publication_id'];?> class="publications-list__item-title">
               <?php echo $value['name']; ?>
             </a>
             <span class="publications-list__item-company">

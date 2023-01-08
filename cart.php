@@ -1,7 +1,7 @@
 <?php
 include ("app/controllers/users.php");
 error_reporting(0);
-if (!isset($_COOKIE['user_id'])){
+if (!isset($_COOKIE['user_id']) || $_SESSION['admin']){
   echo "<h1>403 Error</h1>";
   exit();
 }
@@ -73,7 +73,7 @@ $_SESSION['cart'] = $cart_items;
           <?php foreach ($cart_items as $key => $value): ?>
             <li class="cart-list__item flex">
               <div class="cart-list__item-photo">
-                <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub_id'];?>">
+                <a href="<?= "product.php?post=".$value['pub_id'];?>">
                   <img src="assets/img/posts/<?php echo $value['img']?>" alt="">
                 </a>
 
@@ -81,7 +81,7 @@ $_SESSION['cart'] = $cart_items;
               <div class="cart-list__item-content flex">
                 <div class="cart-list__item-header flex">
                   <h3 class="cart-list__item-title">
-                    <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub_id'];?>">
+                    <a href="<?= "product.php?post=".$value['pub_id'];?>">
                       <?php echo $value['pub_name']; ?>
                     </a>
                   </h3>

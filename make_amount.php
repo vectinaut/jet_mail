@@ -1,5 +1,9 @@
 <?php
 include ("app/controllers/users.php");
+if (!isset($_COOKIE['user_id']) || $_SESSION['admin']){
+  echo "<h1>403 Error</h1>";
+  exit();
+}
 
 if (isset($_GET['cart'])) {
   switch ($_GET['cart']) {

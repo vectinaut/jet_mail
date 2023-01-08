@@ -16,4 +16,4 @@ setcookie('close', 1, time()+999999);
 //$_SESSION['id'] = -1;
 
 
-header('location: '."http://localhost/jet_mail/");
+header('location: '."index.php");

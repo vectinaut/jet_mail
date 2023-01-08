@@ -122,6 +122,10 @@ h1, h2, h3, p{
   color: #333;
 }
 
+.admin{
+  color: red;
+}
+
 .header-btn:not(:last-child){
   margin-right: 20px;
 }
@@ -707,4 +711,77 @@ form div.err{
   border-radius: 36px;
   background: #bdbfc6;
   color: #333;
+}
+
+/*employlee*/
+
+.employee-container{
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+.employee-search{
+  position: relative;
+  flex-grow: 1;
+  align-items: center;
+  padding-right: 20px;
+  margin-top: 50px;
+  margin-right: 32px;
+  border-radius: 36px;
+  background: #fff;
+}
+
+.employee-search__input{
+  flex-grow: 1;
+  padding: 14px 0;
+  padding-left: 20px;
+  margin-right: 10px;
+  border: none;
+  background: transparent;
+  color: #333;
+}
+
+.employee-search__input::placeholder{
+  opacity: 0.5;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #333;
+}
+
+.employee-search__btn{
+  opacity: 0.5;
+}
+
+.employee-search__error{
+  position: absolute;
+  left: 17px;
+  bottom: -16px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  color: #f51f10;
+}
+
+.user-subscribes{
+  flex-grow: 1;
+}
+
+.subscribes-list__item-status{
+  align-self: flex-end;
+  font-size: 16px;
+  line-height: 14px;
+  color: #333;
+}
+
+.employee-search__none{
+  position: absolute;
+  left: 17px;
+  top: -19px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  color: #f51f10;
 }

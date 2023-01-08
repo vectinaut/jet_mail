@@ -59,7 +59,7 @@ $publication = selectOnePublication(['publication_id'=>$post]);
             <span class="product__content-price">
               <?=$publication['price']?>р. в месяц
             </span>
-            <form method="post" action="http://localhost/jet_mail/cart.php">
+            <form method="post" action="cart.php">
               <button value="<?=$publication['publication_id']?>" name="add-cart" class="product__content-btn btn-resert">
                 <?php $_SESSION['update_cart']=1;?>
                 Добавить в корзину

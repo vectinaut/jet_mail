@@ -1,6 +1,6 @@
 <?php
 include ("app/controllers/users.php");
-if (!isset($_COOKIE['user_id'])){
+if (!isset($_COOKIE['user_id']) || $_SESSION['admin']){
   echo "<h1>403 Error</h1>";
   exit();
 }
@@ -59,7 +59,7 @@ if($expired){
         </h2>
         <ul class="subscribes-list list-resert flex">
           <?php foreach ($active_pub as $key=>$value): ?>
-          <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub']['publication_id'];?>">
+          <a href="<?= "product.php?post=".$value['pub']['publication_id'];?>">
           <li class="subscribes-list__item flex">
             <div class="subscribes-list__item-photo">
               <img src="assets/img/posts/<?=$value['pub']['img'] ?>" alt="">
@@ -99,7 +99,7 @@ if($expired){
           <?php foreach ($expired_pub as $key=>$value): ?>
           <li class="subscribes-list__item flex">
             <div class="subscribes-list__item-photo non-subscribes-list__item-photo">
-              <a href="<?= "http://localhost/jet_mail/"."product.php?post=".$value['pub']['publication_id'];?>">
+              <a href="<?= "product.php?post=".$value['pub']['publication_id'];?>">
               <img src="assets/img/posts/<?=$value['pub']['img'] ?>" alt="">
               </a>
             </div>
